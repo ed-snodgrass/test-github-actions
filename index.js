@@ -19,7 +19,6 @@ const getParcelsUrl = (resultOffset, resultRecordCount) => `https://gis.dogis.or
 
 async function getParcels(page, pageSize) {
     const pageUrl = getParcelsUrl(page, pageSize);
-    console.log(pageUrl);
     const parcelsFeaturesResponse = await httpsPromise(pageUrl);
     const parcelsFeatures = JSON.parse(parcelsFeaturesResponse.body);
     return parcelsFeatures.features;
@@ -32,13 +31,11 @@ const makeDataRequests = async (count, pageSize) => {
     }
 
     const parcels = [];
-    const pageCount = count / pageSize;
-    for (let i = 0; i < pageCount; i++) {
-        console.time(`${i}`);
-        const pageParcels = await getParcels(i, i === pageCount - 1 ? count % pageSize : pageSize);
+    for (let countOffset = 0; countOffset < count;) {
+        console.log(countOffset);
+        const pageParcels = await getParcels(countOffset, pageSize);
         parcels.push(...pageParcels.map(pageParcel => pageParcel.attributes));
-        console.timeEnd(`${i}`);
+        countOffset += pageParcels.length;
     }
-    console.log(parcels.length);
     return parcels;
 }
