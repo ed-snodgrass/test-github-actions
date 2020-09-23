@@ -2,21 +2,45 @@ name: Manual workflow
 
 on: [workflow_dispatch]
 
+#jobs:
+#  parse-parcels:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#        -
+#    - uses: actions/setup-node@v1
+#      with:
+#        node-version: 12
+#    - run: npm i
+#    - run: node index.js
+#    - run: git config --local user.email "snodgrass.ed@gmail.com"
+#    - run: git config --local user.name "eis95"
+#    - run: git add -A
+#    - run: git commit -a -m "Add changes"
+#    - name: Push changes
+#      uses: ad-m/github-push-action@master
+#      with:
+#        github_token: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  parse-parcels:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12
-    - run: npm i
-    - run: node index.js
-    - run: git config --local user.email "snodgrass.ed@gmail.com"
-    - run: git config --local user.name "eis95"
-    - run: git add -A
-    - run: git commit -a -m "Add changes"
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@master
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Create local changes
+        run: |
+          npm i
+          node index.js
+      - name: Commit files
+        run: |
+          git config --local user.email "snodgrass.ed@gmail.com"
+          git config --local user.name "Ed Snodgrass"
+          git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
