@@ -12,14 +12,11 @@ jobs:
         node-version: 12
     - run: npm i
     - run: node index.js
-  push-parcel-files:
-    needs: [ parse-parcels ]
-    steps:
       - run: git config --local user.email "snodgrass.ed@gmail.com"
-      - run: git config --local user.name "eis95"
-      - run: git add -A
-      - run: git commit -a -m "Add changes"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        - run: git config --local user.name "eis95"
+          - run: git add -A
+            - run: git commit -a -m "Add changes"
+              - name: Push changes
+                uses: ad-m/github-push-action@master
+                with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
