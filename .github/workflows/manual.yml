@@ -13,7 +13,7 @@ jobs:
     - run: npm i
     - run: node index.js
   push-parcel-files:
-      - name: Pushing the new parcel files
+    steps:
       - needs: [ parse-parcels ]
       - run: git config --local user.email "snodgrass.ed@gmail.com"
       - run: git config --local user.name "eis95"
