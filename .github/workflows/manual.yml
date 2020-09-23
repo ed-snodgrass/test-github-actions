@@ -11,13 +11,15 @@ jobs:
       with:
         node-version: 12
     - run: npm i
-    - run: touch test.txt
     - run: node index.js
-    - run: git config --local user.email "snodgrass.ed@gmail.com"
-    - run: git config --local user.name "eis95"
-    - run: git add -A
-    - run: git commit -a -m "Add changes"
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+  push-parcel-files:
+      - name: Pushing the new parcel files
+      - needs: [ parse-parcels ]
+      - run: git config --local user.email "snodgrass.ed@gmail.com"
+      - run: git config --local user.name "eis95"
+      - run: git add -A
+      - run: git commit -a -m "Add changes"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
