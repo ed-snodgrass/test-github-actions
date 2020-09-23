@@ -13,8 +13,8 @@ jobs:
     - run: npm i
     - run: node index.js
   push-parcel-files:
+    needs: [ parse-parcels ]
     steps:
-      - needs: [ parse-parcels ]
       - run: git config --local user.email "snodgrass.ed@gmail.com"
       - run: git config --local user.name "eis95"
       - run: git add -A
